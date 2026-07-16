@@ -2189,23 +2189,25 @@ document.querySelectorAll('.project-card[data-project]').forEach(card => {
 </script>
 
 
-    
 <script>
   function enviarAltura() {
     const altura = document.documentElement.scrollHeight;
     window.parent.postMessage({ tipo: 'ajustarAltura', altura: altura }, '*');
   }
 
-  // Envia ao carregar
+  // Só mede no carregamento e via timeouts controlados — SEM listener de resize
   window.addEventListener('load', enviarAltura);
-
-  // Envia sempre que o conteúdo mudar de tamanho (imagens carregando, etc)
-  window.addEventListener('resize', enviarAltura);
-
-  // Reforça o envio algumas vezes após carregar (para imagens/fonts que demoram)
   setTimeout(enviarAltura, 500);
   setTimeout(enviarAltura, 1500);
-</script>    
+  setTimeout(enviarAltura, 3000);
+
+  // Se o conteúdo mudar dinamicamente (accordion, abas, etc),
+  // use um MutationObserver em vez de 'resize':
+  const observer = new MutationObserver(() => {
+    setTimeout(enviarAltura, 100);
+  });
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
     
     
     
