@@ -2188,5 +2188,26 @@ document.querySelectorAll('.project-card[data-project]').forEach(card => {
 });
 </script>
 
+
+    
+<script>
+  function enviarAltura() {
+    const altura = document.documentElement.scrollHeight;
+    window.parent.postMessage({ tipo: 'ajustarAltura', altura: altura }, '*');
+  }
+
+  // Envia ao carregar
+  window.addEventListener('load', enviarAltura);
+
+  // Envia sempre que o conteúdo mudar de tamanho (imagens carregando, etc)
+  window.addEventListener('resize', enviarAltura);
+
+  // Reforça o envio algumas vezes após carregar (para imagens/fonts que demoram)
+  setTimeout(enviarAltura, 500);
+  setTimeout(enviarAltura, 1500);
+</script>    
+    
+    
+    
 </body>
 </html>
