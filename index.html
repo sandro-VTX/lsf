@@ -2195,18 +2195,15 @@ document.querySelectorAll('.project-card[data-project]').forEach(card => {
     window.parent.postMessage({ tipo: 'ajustarAltura', altura: altura }, '*');
   }
 
-  // Só mede no carregamento e via timeouts controlados — SEM listener de resize
+  // Medições únicas e finitas — SEM MutationObserver e SEM listener de resize.
+  // (O MutationObserver foi removido de propósito: o efeito "reveal" ao rolar
+  // muda classes/atributos continuamente, e como o iframe fica sem scroll
+  // próprio, isso realimentava o cálculo de altura em loop.)
   window.addEventListener('load', enviarAltura);
   setTimeout(enviarAltura, 500);
   setTimeout(enviarAltura, 1500);
   setTimeout(enviarAltura, 3000);
-
-  // Se o conteúdo mudar dinamicamente (accordion, abas, etc),
-  // use um MutationObserver em vez de 'resize':
-  const observer = new MutationObserver(() => {
-    setTimeout(enviarAltura, 100);
-  });
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+  setTimeout(enviarAltura, 5000); // margem extra para fontes/imagens lentas
 </script>
     
     
