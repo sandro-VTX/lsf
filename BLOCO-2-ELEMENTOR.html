@@ -1,0 +1,380 @@
+<!-- ══════════════════════════════════════════════════════════════
+     BLOCO 2 de 2 — página Light Steel Frame · studio VTX
+     Cole num segundo widget "HTML", LOGO ABAIXO do widget "Form".
+     Contém a saída de WhatsApp, o rodapé, o lightbox e os scripts.
+     ══════════════════════════════════════════════════════════════ -->
+
+<div class="lsf-root"><!-- inicio do Bloco 2 -->
+
+<!-- SAÍDA SECUNDÁRIA — para quem prefere falar agora em vez de deixar dados.
+     Fica logo abaixo do formulário do Elementor. -->
+<section class="pos-form">
+  <p>
+    prefere falar agora?
+    <a href="https://wa.me/554141415471?text=Ol%C3%A1%2C%20vim%20da%20p%C3%A1gina%20de%20Light%20Steel%20Frame%20do%20studioVTX%20e%20tenho%20interesse%20em%20Projetar%20minha%20casa%21" target="_blank" rel="noopener">
+      chamar no WhatsApp
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <span class="bracket">[ </span>studio<strong>vtx</strong><span class="bracket"> [</span>
+  </div>
+  <nav>
+    <a href="#">instagram</a>
+    <a href="#">projetos</a>
+    <a href="#">contato</a>
+    <a href="#">área do cliente</a>
+  </nav>
+</footer>
+
+
+<!-- LIGHTBOX MODAL -->
+<div class="lb-overlay" id="lb-overlay" role="dialog" aria-modal="true">
+  <div class="lb-header">
+    <div class="lb-project-name" id="lb-name">casa<span>lsf01</span></div>
+    <div class="lb-counter" id="lb-counter">1 / 4</div>
+    <button class="lb-close" id="lb-close" aria-label="Fechar">&#x2715;</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-image-area">
+      <img class="lb-img" id="lb-main-img" src="" alt="" style="display:none;">
+      <div class="lb-placeholder" id="lb-placeholder">
+        <svg viewBox="0 0 24 24" stroke-width="0.75"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>imagens em breve</span>
+      </div>
+      <button class="lb-nav prev" id="lb-prev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="lb-nav next" id="lb-next" aria-label="Próximo">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="lb-info">
+      <div class="lb-info-header">
+        <div class="lb-info-tag" id="lb-tag">light steel frame</div>
+        <div class="lb-info-title" id="lb-title">casa<span>lsf01</span></div>
+      </div>
+      <div class="lb-info-body" id="lb-info-body">
+        <!-- preenchido via JS -->
+      </div>
+      <div class="lb-thumbs" id="lb-thumbs"></div>
+    </div>
+  </div>
+</div>
+
+
+</div><!-- /.lsf-root (fim do Bloco 2) -->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CAMPANHA POR VÍDEO (?c=) → campo escondido "campaign" do formulário
+     Ex.: studiovtx.com.br/lsf?c=yt-casa-lsf-01#projeto
+     Lê o ?c= da URL e escreve no campo campaign do widget Form do
+     Elementor. Sem ?c=, o campo fica vazio. Também propaga o código
+     para os links de WhatsApp, para o lead do YouTube carregar a origem.
+     NÃO contém chave nenhuma — é seguro rodar no navegador.
+     ══════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  var c = (new URLSearchParams(location.search).get('c') || '').slice(0, 60);
+  if (!c) return;
+
+  function preencherCampanha() {
+    // Elementor gera o hidden como id="form-field-campaign"
+    var alvos = document.querySelectorAll(
+      '#form-field-campaign, input[name="form_fields[campaign]"], input[name="campaign"], #campo-campanha'
+    );
+    alvos.forEach(function (el) { el.value = c; });
+    return alvos.length > 0;
+  }
+
+  // tenta agora; se o form ainda nao existir, observa o DOM ate aparecer
+  if (!preencherCampanha()) {
+    var obs = new MutationObserver(function () {
+      if (preencherCampanha()) obs.disconnect();
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+    setTimeout(function () { obs.disconnect(); }, 10000);
+  }
+
+  // propaga a origem tambem para os botoes de WhatsApp
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
+    try {
+      var u = new URL(a.href);
+      var t = u.searchParams.get('text') || '';
+      u.searchParams.set('text', t + ' (origem: ' + c + ')');
+      a.href = u.toString();
+    } catch (e) {}
+  });
+})();
+</script>
+
+
+<script>
+
+
+
+  // ── DEPOIMENTOS ──────────────────────────────────────
+  (function(){
+    const track = document.getElementById('dep-track');
+    const dotsEl = document.getElementById('dep-dots');
+    if (!track) return;
+    const slides = track.querySelectorAll('.dep-slide');
+    const n = slides.length;
+    let cur = 0;
+    for (let i = 0; i < n; i++){
+      const d = document.createElement('button');
+      d.className = 'dep-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'slide ' + (i+1));
+      d.onclick = () => go(i);
+      dotsEl.appendChild(d);
+    }
+    function go(idx){
+      cur = (idx + n) % n;
+      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dotsEl.querySelectorAll('.dep-dot').forEach((d,i) => d.classList.toggle('active', i === cur));
+    }
+    document.getElementById('dep-prev').onclick = () => go(cur - 1);
+    document.getElementById('dep-next').onclick = () => go(cur + 1);
+    let sx = 0;
+    track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) go(dx < 0 ? cur+1 : cur-1); }, {passive:true});
+  })();
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+<script>
+// ── PROJECT DATA ─────────────────────────────────────
+const projects = {
+  lsf01: {
+    name: 'das araucárias',
+    title: 'casa<span>[das araucárias]</span>',
+    tag: 'em construção',
+    status: 'em-construcao',
+    statusLabel: 'em construção',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '293,81 m²' },
+      { label: 'localização', value: 'Curitiba, PR' },
+      { label: 'ano', value: '2024' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar de alto padrão projetada e executada com sistema LSF em conjunto com Estrutura de Aço Laminado. Arquitetura contemporânea com ênfase na plasticidade visual, precisão construtiva e personalização completa para a família.' }
+    ],
+    // Adicione os caminhos das imagens aqui quando disponíveis
+    images: [
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/02_Casa%20da%20Mata%20-%20Vista%20frontal%20central_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/04_Casa%20da%20Mata%20-%20Vista%20posterior%20central_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/05_Casa%20da%20Mata%20-%20Vista%20lateral%20esquerda_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/07_Casa%20da%20Mata%20-%20Integra%C3%A7%C3%A3o%20interna_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/08_Casa%20da%20Mata%20-%20Piscina_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf01/09_Casa%20da%20Mata%20-%20Detalhe%20integra%C3%A7%C3%A3o_opt.jpg'
+    ]
+  },
+  lsf02: {
+    name: 'AR',
+    title: 'casa<span>[AR]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '260,48 m²' },
+      { label: 'localização', value: 'Curitiba, PR' },
+      { label: 'ano', value: '2025/2026' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar de alto padrão em sistema LSF. Projeto em desenvolvimento pelo studio VTX.' }
+    ],
+    images: [
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf02/01_Casa%20AR%20-%20vista%20frontal%2001_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf02/02_Casa%20AR%20-%20vista%20frontal%2002_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf02/03_Casa%20AR%20-%20vista%20frontal%20interna%2001_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf02/04_Casa%20AR%20-%20vista%20frontal%20interna%2002_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf02/07_Casa%20AR%20-%20vista%20posterior%2003_opt.jpg',
+    ]
+  },
+  lsf03: {
+    name: 'beverly hills',
+    title: 'casa<span>[beverly hills]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '475,64 m²' },
+      { label: 'localização', value: 'Pinhais, PR' },
+      { label: 'ano', value: '2025' },
+      { label: 'sobre o projeto', value: 'Residência de alto padrão com programa amplo, integração exterior-interior e uma grande área de lazer como elemento central das atividades da família.' }
+    ],
+    images: [
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/01_Casa%20Carvalho%20-%20vista%20frontal%20esquerda_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/03Casa%20Carvalho%20-%20Hall%20de%20acesso_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/04_Casa%20Carvalho%20-%20vista%20lateral%20direita_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/05_Casa%20Carvalho%20-%20acesso%20ve%C3%ADculos_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/06_Casa%20Carvalho%20-%20vista%20lateral%20direita%202_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/09_Casa%20Carvalho%20-%20detalhe%20%C3%A1rea%20de%20lazer_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf03/10_Casa%20Carvalho%20-%20detalhe%20piscina_opt.jpg',
+    ]
+  },
+  lsf04: {
+    name: 'andrade',
+    title: 'casa<span>[andrade]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '247,34 m²' },
+      { label: 'localização', value: 'São José dos Pinhais, PR' },
+      { label: 'ano', value: '2025' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar LSF de alto padrão em desenvolvimento pelo studio VTX.' }
+    ],
+    images: [
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf04/01_Casa%20Robertson%20-%20Vista%20frontal%20esquerda_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf04/02_Casa%20Robertson%20-%20Vista%20frontal%20central_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf04/03_Casa%20Robertson%20-%20Vista%20frontal%20direita_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf04/04_Casa%20Robertson%20-%20Vista%20posterior%20direita_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf04/05_Casa%20Robertson%20-%20Vista%20posterior%20central_opt.jpg'
+    ]
+  },
+  lsf05: {
+    name: 'forma design',
+    title: 'casa<span>[forma design]</span>',
+    tag: 'em construção',
+    status: 'em-construcao',
+    statusLabel: 'em construção',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '220,00 m²' },
+      { label: 'localização', value: 'Curitiba, PR' },
+      { label: 'ano', value: '2024' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar LSF de alto padrão em construção pelo studio VTX.' }
+    ],
+    images: [
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf05/01_opt.jpg',
+      'https://studiovtx.com.br/wp-content/uploads/lsf/projetos/lsf05/02_opt.jpg',
+    ]
+  }
+};
+
+// ── STATE ─────────────────────────────────────────────
+let currentProject = null;
+let currentIndex = 0;
+
+// ── OPEN / CLOSE ──────────────────────────────────────
+function openLightbox(projectId) {
+  currentProject = projects[projectId];
+  if (!currentProject) return;
+  currentIndex = 0;
+  document.getElementById('lb-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lb-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ── RENDER ────────────────────────────────────────────
+function renderLightbox() {
+  const p = currentProject;
+  const total = p.images.length;
+
+  // Header
+  document.getElementById('lb-name').innerHTML = 'casa<span>' + p.name + '</span>';
+  document.getElementById('lb-counter').textContent = (currentIndex + 1) + ' / ' + total;
+
+  // Info panel
+  document.getElementById('lb-tag').textContent = p.tag;
+  document.getElementById('lb-title').innerHTML = p.title;
+
+  const body = document.getElementById('lb-info-body');
+  body.innerHTML = '<div class="lb-info-row"><div class="lb-info-label">status</div><div class="lb-info-status ' + p.status + '">' + p.statusLabel + '</div></div>'
+    + p.info.map(r => '<div class="lb-info-row"><div class="lb-info-label">' + r.label + '</div><div class="lb-info-value">' + r.value + '</div></div>').join('');
+
+  // Thumbnails
+  const thumbs = document.getElementById('lb-thumbs');
+  thumbs.innerHTML = p.images.map((src, i) => {
+    const active = i === currentIndex ? ' active' : '';
+    return '<img class="lb-thumb' + active + '" src="' + src + '" alt="img ' + (i+1) + '" onclick="goTo(' + i + ')" onerror="this.style.display=\'none\'">';
+  }).join('');
+
+  // Main image
+  loadImage(currentIndex);
+
+  // Nav visibility
+  document.getElementById('lb-prev').style.opacity = currentIndex === 0 ? '0.3' : '1';
+  document.getElementById('lb-next').style.opacity = currentIndex === total - 1 ? '0.3' : '1';
+}
+
+function loadImage(index) {
+  const img = document.getElementById('lb-main-img');
+  const placeholder = document.getElementById('lb-placeholder');
+  const src = currentProject.images[index];
+
+  img.classList.add('fading');
+  setTimeout(() => {
+    img.src = src;
+    img.onload = () => {
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+      img.classList.remove('fading');
+    };
+    img.onerror = () => {
+      img.style.display = 'none';
+      placeholder.style.display = 'flex';
+      img.classList.remove('fading');
+    };
+  }, 150);
+
+  // Update counter
+  document.getElementById('lb-counter').textContent = (index + 1) + ' / ' + currentProject.images.length;
+
+  // Update thumbs
+  document.querySelectorAll('.lb-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+  });
+}
+
+function goTo(index) {
+  const total = currentProject.images.length;
+  if (index < 0 || index >= total) return;
+  currentIndex = index;
+  loadImage(currentIndex);
+  document.getElementById('lb-prev').style.opacity = currentIndex === 0 ? '0.3' : '1';
+  document.getElementById('lb-next').style.opacity = currentIndex === total - 1 ? '0.3' : '1';
+}
+
+// ── EVENT LISTENERS ───────────────────────────────────
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => goTo(currentIndex - 1));
+document.getElementById('lb-next').addEventListener('click', () => goTo(currentIndex + 1));
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lb-overlay').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') goTo(currentIndex + 1);
+  if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ── SWIPE (MOBILE) ────────────────────────────────────
+let touchStartX = 0;
+document.getElementById('lb-overlay').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('lb-overlay').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) dx < 0 ? goTo(currentIndex + 1) : goTo(currentIndex - 1);
+}, { passive: true });
+
+// ── HOOK PROJECT CARDS ────────────────────────────────
+document.querySelectorAll('.project-card[data-project]').forEach(card => {
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', () => openLightbox(card.dataset.project));
+});
+</script>

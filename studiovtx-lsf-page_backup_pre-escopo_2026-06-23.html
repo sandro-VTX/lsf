@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Light Steel Frame — studio VTX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:      #0A0A0A;
+    --white:      #ffffff;
+    --petrol:     #127D8E;
+    --petrol-dark: #0E6A78;
+    --gray-light: #f4f4f4;
+    --gray-mid:   #c5c5c5;
+    --gray-text:  #333333;
+    --gray-soft:  #555555;
+    --gray-dark:  #1a1a1a;
+    --border:     rgba(255,255,255,0.12);
+    --border-dark: rgba(0,0,0,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--gray-text);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+    background: var(--black);
+  }
+
+  .nav-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo .bracket { font-weight: 300; opacity: 0.7; }
+  .nav-logo strong { font-weight: 800; }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 0.6; }
+  .nav-links a.active { font-weight: 600; }
+
+  .nav-btn {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--black);
+    background: var(--white);
+    padding: 0.5rem 1.2rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-btn:hover { opacity: 0.8; }
+
+  /* ─── HERO ────────────────────────────────────────── */
+  .hero {
+    background: var(--black);
+    min-height: 100vh;
+    padding-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 6rem 3rem;
+  }
+
+  .hero-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    text-transform: lowercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title .light {
+    font-weight: 300;
+    color: var(--gray-mid);
+    display: block;
+  }
+
+  .hero-title .bracket {
+    color: var(--gray-mid);
+    font-weight: 300;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 300;
+    color: var(--gray-mid);
+    letter-spacing: 0.05em;
+    margin-bottom: 3rem;
+    line-height: 1.4;
+  }
+
+  .hero-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--gray-mid);
+    max-width: 380px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--petrol);
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    width: fit-content;
+  }
+  .hero-cta:hover { background: var(--petrol-dark); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+  }
+
+  /* Blueprint grid */
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .blueprint-visual {
+    position: relative; z-index: 1;
+    width: 85%;
+    max-width: 520px;
+    opacity: 0.5;
+  }
+  .blueprint-visual svg {
+    width: 100%;
+  }
+
+  /* Stat chips */
+  .stat-chip {
+    position: absolute; z-index: 5;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+  }
+  .stat-chip-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--black);
+    line-height: 1;
+  }
+  .stat-chip-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-text);
+    margin-top: 0.3rem;
+  }
+  .chip-1 { top: 18%; right: 6%; }
+  @keyframes chipFloat {
+    0%,100% { transform: translateY(0px); }
+    50%      { transform: translateY(-8px); }
+  }
+  @keyframes chipFloat2 {
+    0%,100% { transform: translateY(0px); }
+    50%      { transform: translateY(-6px); }
+  }
+  .chip-1 { animation: chipFloat  4s ease-in-out infinite; }
+  .chip-2 { animation: chipFloat2 5s ease-in-out infinite 1s; }
+
+  .chip-2 { bottom: 22%; right: 20%; }
+
+  /* ─── SECTION LABEL ───────────────────────────────── */
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ─── IMAGE HERO (full-bleed after main hero) ────── */
+  .image-hero {
+    width: 100%;
+    height: 70vh;
+    min-height: 480px;
+    position: relative;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .image-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 8s ease;
+  }
+  .image-hero:hover img { transform: scale(1.03); }
+
+  .image-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15) 0%,
+      rgba(0,0,0,0.0) 40%,
+      rgba(0,0,0,0.6) 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+  }
+
+  .image-hero-caption {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Placeholder when no image */
+  .image-hero-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0d0d0d;
+    gap: 1rem;
+    position: relative;
+  }
+  .image-hero-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .image-hero-placeholder span {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    position: relative; z-index: 1;
+  }
+  .image-hero-placeholder svg {
+    width: 40px; height: 40px;
+    stroke: rgba(255,255,255,0.15);
+    fill: none;
+    position: relative; z-index: 1;
+  }
+
+  /* ─── IMAGE STRIP (between process and portfolio) ─ */
+  .image-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 50vh;
+    min-height: 320px;
+    gap: 1px;
+    background: #000;
+  }
+
+  .image-strip-item {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .image-strip-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .image-strip-item:hover img { transform: scale(1.05); }
+
+  .image-strip-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #111;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .image-strip-item:hover .image-strip-placeholder { background: #161616; }
+  .image-strip-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .image-strip-placeholder svg {
+    width: 32px; height: 32px;
+    stroke: rgba(255,255,255,0.1); fill: none;
+    position: relative; z-index: 1;
+  }
+
+  .image-strip-label {
+    position: absolute; bottom: 1rem; left: 1rem; right: 1rem;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    z-index: 5;
+  }
+
+
+  @media (max-width: 768px) {
+    .dep-slide { grid-template-columns: 1fr; }
+    .dep-arrow-prev { left: -0.5rem; }
+    .dep-arrow-next { right: -0.5rem; }
+    .par-card { min-width: 140px; }
+  }
+
+  /* ─── WHAT IS LSF ─────────────────────────────────── */
+  .what-is {
+    background: var(--black);
+    padding: 7rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .what-is h2 {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    text-transform: lowercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+  }
+  .what-is h2 .light { font-weight: 300; color: var(--gray-mid); }
+
+  .what-is p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--gray-mid);
+    margin-bottom: 1.2rem;
+  }
+
+  .advantage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .advantage-card {
+    background: var(--black);
+    padding: 2rem 1.5rem;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .advantage-card:hover {
+    border-color: var(--white);
+    background: #0d0d0d;
+  }
+
+  .advantage-num {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gray-mid);
+    margin-bottom: 1rem;
+  }
+  .advantage-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+  }
+  .advantage-desc {
+    font-size: 0.78rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--gray-mid);
+  }
+
+  /* ─── STATS BAR ───────────────────────────────────── */
+  .stats-bar {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .stat-item {
+    padding: 3rem 2rem;
+    border-right: 1px solid var(--border-dark);
+    text-align: center;
+    transition: background 0.3s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--gray-light); }
+
+  .stat-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--black);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-top: 0.6rem;
+  }
+
+  /* ─── PROCESS ─────────────────────────────────────── */
+  .process {
+    background: var(--gray-light);
+    padding: 7rem 3rem;
+  }
+
+  .process-header {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    align-items: end;
+  }
+
+  .process-header h2 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--black);
+    text-transform: lowercase;
+    letter-spacing: -0.01em;
+  }
+  .process-header h2 .light { font-weight: 300; color: var(--gray-mid); }
+
+  .process-header p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--gray-text);
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border-dark);
+    border: 1px solid var(--border-dark);
+  }
+
+  .step {
+    background: var(--white);
+    padding: 2.5rem 1.8rem;
+    transition: background 0.25s;
+  }
+  .step:hover { background: var(--black); }
+  .step:hover .step-num { color: rgba(255,255,255,0.15); }
+  .step:hover .step-title { color: var(--white); }
+  .step:hover .step-desc { color: var(--gray-mid); }
+
+  .step-num {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--gray-light);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.25s;
+    letter-spacing: -0.02em;
+  }
+  .step-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 0.75rem;
+    transition: color 0.25s;
+  }
+  .step-desc {
+    font-size: 0.75rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--gray-text);
+    transition: color 0.25s;
+  }
+
+  /* ─── PORTFOLIO ───────────────────────────────────── */
+  .portfolio {
+    background: var(--black);
+    padding: 7rem 3rem;
+  }
+
+  .portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .portfolio-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    text-transform: lowercase;
+    letter-spacing: -0.01em;
+  }
+  .portfolio-header h2 .light { font-weight: 300; color: var(--gray-mid); }
+
+  .portfolio-link {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .portfolio-link:hover { opacity: 0.6; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .project-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #111;
+  }
+  .project-card-featured { grid-row: 1 / 3; }
+
+  .project-placeholder {
+    width: 100%;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card-featured .project-placeholder { min-height: 480px; }
+  .project-card:hover .project-placeholder { background: #181818; }
+
+  .project-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .project-placeholder-icon {
+    position: relative; z-index: 1; opacity: 0.15;
+  }
+  .project-placeholder-icon svg {
+    width: 48px; height: 48px;
+    stroke: var(--white); fill: none; stroke-width: 0.75;
+  }
+
+  .project-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 100%);
+    z-index: 5;
+  }
+  .project-status {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 0.4rem;
+  }
+  .project-name {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--white);
+    text-transform: lowercase;
+  }
+  .project-name strong { font-weight: 800; }
+  .project-info {
+    font-size: 0.68rem;
+    font-weight: 300;
+    color: var(--gray-mid);
+    margin-top: 0.2rem;
+  }
+
+  /* ─── MANIFESTO ───────────────────────────────────── */
+  .manifesto {
+    background: var(--white);
+    padding: 7rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7rem;
+    align-items: center;
+  }
+
+  .manifesto-quote {
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--black);
+    font-style: italic;
+    position: relative;
+  }
+
+  .manifesto-quote strong {
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .manifesto-author {
+    margin-top: 2rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .manifesto-author::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--gray-mid);
+  }
+
+  .manifesto-right { display: flex; flex-direction: column; gap: 2.5rem; }
+
+  .manifesto-block {
+    border-left: 2px solid var(--border-dark);
+    padding-left: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .manifesto-block:hover { border-color: var(--black); }
+
+  .manifesto-block h4 {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 0.6rem;
+  }
+  .manifesto-block p {
+    font-size: 0.83rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--gray-text);
+  }
+
+  /* ─── CTA ─────────────────────────────────────────── */
+  .cta-section {
+    background: var(--black);
+    padding: 7rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '[ LSF ]';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22vw;
+    font-weight: 800;
+    color: rgba(255,255,255,0.025);
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    text-transform: lowercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .cta-section h2 .light { font-weight: 300; color: var(--gray-mid); }
+
+  .cta-section p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gray-mid);
+    max-width: 440px;
+    margin: 0 auto 3rem;
+    line-height: 1.9;
+    position: relative;
+  }
+
+  .cta-buttons {
+    display: flex; gap: 1rem; justify-content: center; position: relative;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center; gap: 0.75rem;
+    padding: 0.9rem 2.5rem;
+    background: var(--petrol);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--petrol-dark); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center; gap: 0.75rem;
+    padding: 0.9rem 2.5rem;
+    background: transparent;
+    color: var(--gray-mid);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); color: var(--white); }
+
+  /* ─── FORM INTRO ──────────────────────────────────── */
+  .form-intro {
+    background: var(--black);
+    padding: 0 var(--side-pad) 2.5rem;
+    text-align: center;
+  }
+  .form-or {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.25rem;
+    max-width: 340px;
+    margin: 0 auto 3.5rem;
+  }
+  .form-or::before, .form-or::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  .form-or span {
+    font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+  .form-intro h3 {
+    font-size: clamp(1.3rem, 2.6vw, 2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--white);
+    text-transform: lowercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+  .form-intro h3 strong { font-weight: 800; }
+  .form-intro p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gray-mid);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.9;
+  }
+
+  /* ─── FORMULÁRIO (widget "Form" do Elementor) ───────
+     O formulário NÃO está neste arquivo: é um widget do
+     Elementor inserido entre o bloco 1 e o bloco 2 (ver
+     marcador no fim do HTML). Este CSS o veste com a
+     identidade VTX, sem precisar mexer no painel de estilo. */
+  .elementor-widget-form {
+    background: var(--black);
+    padding: 0 var(--side-pad) 7rem;
+  }
+  .elementor-widget-form .elementor-form {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .elementor-widget-form .elementor-field-group {
+    margin-bottom: 1.6rem;
+  }
+  .elementor-widget-form .elementor-field-label {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.62rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+    color: var(--gray-mid) !important;
+    margin-bottom: 0.6rem !important;
+  }
+  .elementor-widget-form .elementor-field-textual {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 300 !important;
+    color: var(--white) !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+    border-radius: 0 !important;
+    padding: 0.7rem 0 !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s;
+  }
+  .elementor-widget-form .elementor-field-textual:focus {
+    border-bottom-color: var(--petrol) !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  .elementor-widget-form .elementor-field-textual::placeholder {
+    color: rgba(255,255,255,0.3) !important;
+  }
+  .elementor-widget-form textarea.elementor-field-textual {
+    min-height: 110px;
+    resize: vertical;
+  }
+  .elementor-widget-form .elementor-button {
+    font-family: 'Montserrat', sans-serif !important;
+    background: var(--petrol) !important;
+    color: var(--white) !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.95rem 2.5rem !important;
+    transition: background 0.2s;
+  }
+  .elementor-widget-form .elementor-button:hover {
+    background: var(--petrol-dark) !important;
+  }
+  .elementor-widget-form .elementor-message {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.8rem !important;
+    font-weight: 300 !important;
+  }
+  .elementor-widget-form .elementor-message.elementor-message-success {
+    color: var(--petrol) !important;
+  }
+
+  /* Honeypot anti-robô: campo "_hp" invisível para pessoas.
+     Robô preenche, o sistema descarta em silêncio. */
+  .elementor-field-group-_hp {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+  }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+  .footer-logo .bracket { font-weight: 300; opacity: 0.5; }
+  .footer-logo strong { font-weight: 800; }
+
+  footer nav a {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--gray-mid);
+    text-decoration: none;
+    margin-left: 2rem;
+    transition: color 0.2s;
+  }
+  footer nav a:hover { color: var(--white); }
+
+  /* ─── DEV NOTE ────────────────────────────────────── */
+  .dev-note {
+    position: fixed;
+    bottom: 1.5rem; right: 1.5rem;
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem;
+    max-width: 230px;
+    line-height: 1.6;
+    z-index: 9999;
+    border-left: 3px solid var(--black);
+  }
+  .dev-note strong { display: block; margin-bottom: 0.25rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.6rem; }
+
+  /* ─── REVEAL ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── RESPONSIVE ──────────────────────────────────── */
+
+  /* ─── LIGHTBOX ────────────────────────────────────── */
+  .lb-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--black);
+    flex-direction: column;
+  }
+  .lb-overlay.active { display: flex; }
+
+  .lb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  .lb-project-name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .lb-project-name span { font-weight: 300; color: var(--gray-mid); margin-left: 0.5rem; }
+
+  .lb-counter {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--gray-mid);
+  }
+
+  .lb-close {
+    background: none; border: none; cursor: pointer;
+    color: var(--gray-mid); font-size: 1.5rem; line-height: 1;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s;
+    font-weight: 300;
+  }
+  .lb-close:hover { color: var(--white); }
+
+  .lb-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Image area */
+  .lb-image-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #050505;
+  }
+
+  .lb-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: opacity 0.3s ease;
+    user-select: none;
+  }
+  .lb-img.fading { opacity: 0; }
+
+  /* Placeholder for missing images */
+  .lb-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1rem; color: var(--gray-mid);
+  }
+  .lb-placeholder svg { width: 48px; height: 48px; stroke: currentColor; fill: none; opacity: 0.3; }
+  .lb-placeholder span { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.4; }
+
+  /* Nav arrows */
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    color: var(--white);
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 5;
+    transition: background 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .lb-nav:hover { background: rgba(255,255,255,0.1); }
+  .lb-nav.prev { left: 1.5rem; }
+  .lb-nav.next { right: 1.5rem; }
+  .lb-nav svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+  /* Info panel */
+  .lb-info {
+    width: 300px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #050505;
+  }
+
+  .lb-info-header {
+    padding: 2rem 1.8rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lb-info-tag {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 0.75rem;
+  }
+
+  .lb-info-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: lowercase;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .lb-info-title span { font-weight: 300; color: var(--gray-mid); }
+
+  .lb-info-body { padding: 1.5rem 1.8rem; flex: 1; }
+
+  .lb-info-row {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .lb-info-row:last-child { border-bottom: none; }
+
+  .lb-info-label {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 0.3rem;
+  }
+
+  .lb-info-value {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  .lb-info-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .lb-info-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--white);
+    flex-shrink: 0;
+  }
+  .lb-info-status.em-construcao::before { background: var(--petrol); }
+  .lb-info-status.em-projeto::before { background: var(--gray-mid); }
+
+  /* Thumbnails strip */
+  .lb-thumbs {
+    display: flex;
+    gap: 4px;
+    padding: 1rem 1.8rem;
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .lb-thumb {
+    width: 52px; height: 38px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+    background: #111;
+    border: 1px solid transparent;
+  }
+  .lb-thumb.active, .lb-thumb:hover { opacity: 1; border-color: var(--white); }
+  .lb-thumb-placeholder {
+    width: 52px; height: 38px;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lb-thumb-placeholder.active, .lb-thumb-placeholder:hover { opacity: 1; border-color: var(--white); }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .lb-info { width: 100%; border-left: none; border-top: 1px solid var(--border); max-height: 40vh; }
+    .lb-body { flex-direction: column; }
+    .lb-image-area { min-height: 55vh; }
+    .lb-nav.prev { left: 0.75rem; }
+    .lb-nav.next { right: 0.75rem; }
+    .lb-info-header { padding: 1rem 1.2rem 0.8rem; }
+    .lb-info-body { padding: 1rem 1.2rem; }
+    .lb-thumbs { padding: 0.75rem 1.2rem; }
+  }
+
+  @media (max-width: 960px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 4rem 1.5rem; }
+    .what-is, .manifesto { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    .process { padding: 5rem 1.5rem; }
+    .process-header { grid-template-columns: 1fr; gap: 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat-item { border-bottom: 1px solid var(--border-dark); }
+    .portfolio { padding: 5rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .project-card-featured { grid-row: auto; }
+    .cta-section { padding: 5rem 1.5rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    footer nav a:first-child { margin-left: 0; }
+  }
+
+  /* ─── DEPOIMENTOS ─────────────────────────────────── */
+  .depoimentos { padding: 6rem var(--side-pad); background: #fff; }
+  .depoimentos .portfolio-header { margin-bottom: 3rem; }
+  .dep-wrap { position: relative; padding: 0 2.5rem; }
+  .dep-overflow { overflow: hidden; }
+  .dep-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .dep-slide { min-width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; box-sizing: border-box; }
+  .dep-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .dep-avatar { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin: 0 auto 1rem; background: var(--gray-light); flex-shrink: 0; }
+  .dep-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dep-card-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 0.2rem; }
+  .dep-card-project { font-size: 0.7rem; letter-spacing: 0.14em; color: var(--gray-soft); margin-bottom: 1.25rem; }
+  .dep-card-quote { font-size: 0.92rem; line-height: 1.8; font-style: italic; color: #555; }
+  .dep-arr {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; padding: 0.5rem;
+    font-size: 1.6rem; color: #bbb; transition: color .2s; line-height: 1;
+  }
+  .dep-arr:hover { color: var(--petrol); }
+  .dep-arr-prev { left: 0; }
+  .dep-arr-next { right: 0; }
+  .dep-dots { display: flex; justify-content: center; gap: .5rem; margin-top: 2.5rem; }
+  .dep-dot { width: 9px; height: 9px; border-radius: 50%; background: #ddd; border: none; cursor: pointer; padding: 0; transition: background .25s; }
+  .dep-dot.active { background: var(--black); }
+
+  /* ─── PARCEIROS ────────────────────────────────────── */
+  .parceiros { padding: 5rem var(--side-pad); background: var(--gray-light); }
+  .parceiros .portfolio-header { margin-bottom: 3rem; }
+  .par-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .par-card { border: 1px solid rgba(0,0,0,0.08); background: #fff; padding: 2.5rem 1.5rem; text-align: center; transition: border-color .2s; }
+  .par-card:hover { border-color: var(--black); }
+  .par-logo { width: 56px; height: 56px; background: var(--gray-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1rem; font-weight: 800; letter-spacing: .04em; color: var(--black); }
+  .par-name { font-size: 0.82rem; font-weight: 700; margin-bottom: .3rem; line-height: 1.3; }
+  .par-role { font-size: 0.7rem; color: var(--gray-soft); line-height: 1.5; }
+  @media (max-width: 768px) {
+    .dep-slide { grid-template-columns: 1fr; gap: 2rem; }
+    .dep-wrap { padding: 0 1.5rem; }
+    .par-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">especialidade · studio vtx</div>
+    <h1 class="hero-title">
+      <span class="light">light</span>
+      steel<strong>frame</strong>
+    </h1>
+    <p class="hero-subtitle">casas de <strong>alto padrão</strong> em aço.</p>
+    <p class="hero-desc">
+      Light Steel Frame é a tecnologia que permite construir mais rápido, com mais precisão e sem abrir mão de nenhum detalhe do projeto que você imaginou.
+    </p>
+    <a href="#projetos" class="hero-cta">
+      ver projetos
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a href="https://wa.me/554141415471?text=Ol%C3%A1%2C%20vim%20do%20topo%20da%20p%C3%A1gina%20LSF%20do%20studioVTX%20e%20tenho%20interesse%20em%20Projetar%20minha%20casa%21" target="_blank" class="btn-secondary" style="margin-top:1rem;border-color:rgba(255,255,255,0.3);color:var(--gray-mid);">
+      conversar com especialista
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-right">
+    <div class="blueprint-visual" style="
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  overflow:visible; z-index:1;
+">
+  <img src="image_hero_opt.jpg" alt="Estrutura LSF" style="
+    height:120%;
+    width:auto;
+    max-width:none;
+    transform-origin: center center;
+    opacity:0.35;
+    display:block;
+    flex-shrink:0;
+    object-fit:cover;
+  ">
+</div>
+    <div class="stat-chip chip-1">
+      <div class="stat-chip-value">ZERO</div>
+      <div class="stat-chip-label">surpresas no canteiro</div>
+    </div>
+    <div class="stat-chip chip-2">
+      <div class="stat-chip-value">60%</div>
+      <div class="stat-chip-label">mais rápido</div>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE HERO — substitua o placeholder pela sua imagem -->
+<section class="image-hero" id="image-hero-main">
+  <img src="image_hero_opt.jpg" alt="Casa Light Steel Frame · studio VTX" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+  <div class="image-hero-overlay">
+    <div class="image-hero-caption" style="line-height:1.9;">
+      <strong style="font-size:0.75rem;letter-spacing:0.2em;color:#fff;"><a href="https://www.instagram.com/casa_forma_design/" target="_blank" style="color:#fff;text-decoration:none;">casa forma design</a></strong><br>
+      projeto e execução: studio vtx<br>
+      arquiteto responsável: Fábio Machado<br>
+      parceria execução lsf: <a href="https://www.instagram.com/lealsolucoes/" target="_blank" style="color:rgba(255,255,255,0.7);text-decoration:none;">Leal Tecnologia e Construção</a><br>
+      fornecedor materiais lsf: <a href="https://www.instagram.com/espaco.smart/" target="_blank" style="color:rgba(255,255,255,0.7);text-decoration:none;">Espaço SMART</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS LSF -->
+<section class="what-is">
+  <div>
+    <div class="section-label">_o que é</div>
+    <h2 class="reveal">uma nova forma de <span class="light">construir</span> alto padrão</h2>
+    <p class="reveal reveal-delay-1">
+      No Light Steel Frame, a estrutura da casa é feita de perfis de aço galvanizado de alta resistência, montados a partir de um projeto resolvido nos mínimos detalhes antes de a obra começar. Nada é improvisado no canteiro.
+    </p>
+    <p class="reveal reveal-delay-2">
+      O resultado é uma casa com melhor desempenho térmico e acústico, menor desperdício de material e tempo de obra significativamente reduzido — sem nenhuma concessão em arquitetura ou acabamento.
+    </p>
+  </div>
+  <div class="advantage-grid reveal reveal-delay-1">
+    <div class="advantage-card">
+      <div class="advantage-num">01</div>
+      <div class="advantage-title">precisão</div>
+      <div class="advantage-desc">Cada perfil é fabricado com tolerância milimétrica. O projeto manda na obra.</div>
+    </div>
+    <div class="advantage-card">
+      <div class="advantage-num">02</div>
+      <div class="advantage-title">velocidade</div>
+      <div class="advantage-desc">Até 60% mais rápido que alvenaria convencional. Prazo cumprido.</div>
+    </div>
+    <div class="advantage-card">
+      <div class="advantage-num">03</div>
+      <div class="advantage-title">desempenho</div>
+      <div class="advantage-desc">Superior em isolamento térmico, acústico e resistência estrutural.</div>
+    </div>
+    <div class="advantage-card">
+      <div class="advantage-num">04</div>
+      <div class="advantage-title">arquitetura</div>
+      <div class="advantage-desc">Liberdade formal total. Vãos maiores, geometrias complexas, sem limites.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-number">7</div>
+    <div class="stat-label">projetos LSF</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-number">2</div>
+    <div class="stat-label">em construção</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-number" data-target="60" data-suffix="%">60%</div>
+    <div class="stat-label">redução no prazo</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <div class="stat-number">0</div>
+    <div class="stat-label">surpresas no canteiro</div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-header">
+    <h2 class="reveal">do conceito à <span class="light">chave na mão</span></h2>
+    <p class="reveal reveal-delay-1">
+      No studio VTX, o Light Steel Frame começa no projeto arquitetônico e vai até o acompanhamento de obra. Cada fase é controlada, documentada e entregue com a mesma exigência estética.
+    </p>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">briefing</div>
+      <div class="step-desc">Entendimento do programa, do terreno e das expectativas de quem vai viver nessa casa.</div>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-title">projeto arq.</div>
+      <div class="step-desc">Conceito, partido, volumetria e todos os espaços definidos com rigor e identidade.</div>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-title">projeto LSF</div>
+      <div class="step-desc">Detalhamento estrutural completo. Memorial, especificações e compatibilização.</div>
+    </div>
+    <div class="step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <div class="step-title">fabricação</div>
+      <div class="step-desc">Perfis produzidos em fábrica com controle dimensional preciso. Zero imprevisto.</div>
+    </div>
+    <div class="step reveal reveal-delay-4">
+      <div class="step-num">05</div>
+      <div class="step-title">obra e entrega</div>
+      <div class="step-desc">Acompanhamento técnico em cada fase. Do fundação ao acabamento final.</div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- DEPOIMENTOS -->
+<section class="depoimentos">
+  <div class="portfolio-header">
+    <h2 class="reveal">nossos <span class="light">clientes</span></h2>
+  </div>
+  <div class="dep-wrap">
+    <button class="dep-arr dep-arr-prev" id="dep-prev">&#8249;</button>
+    <div class="dep-overflow">
+      <div class="dep-track" id="dep-track">
+    <div class="dep-slide">
+      <div class="dep-card">
+        <div class="dep-avatar">
+          <img src="projeto_2_opt.jpg" alt="casa[das araucárias]" onerror="this.style.opacity='0'">
+        </div>
+        <div class="dep-card-name">casa<strong>[das araucárias]</strong></div>
+        <div class="dep-card-project">projeto studio vtx</div>
+        <p class="dep-card-quote">"Espaço para depoimento do cliente sobre a experiência de projetar e construir com o studio VTX."</p>
+      </div>
+      <div class="dep-card">
+        <div class="dep-avatar">
+          <img src="projeto_ar_opt.jpg" alt="casa[AR]" onerror="this.style.opacity='0'">
+        </div>
+        <div class="dep-card-name">casa<strong>[AR]</strong></div>
+        <div class="dep-card-project">projeto studio vtx</div>
+        <p class="dep-card-quote">"Espaço para depoimento do cliente sobre a experiência de projetar e construir com o studio VTX."</p>
+      </div>
+    </div>
+    <div class="dep-slide">
+      <div class="dep-card">
+        <div class="dep-avatar">
+          <img src="projeto_4_opt.jpg" alt="casa[beverly hills]" onerror="this.style.opacity='0'">
+        </div>
+        <div class="dep-card-name">casa<strong>[beverly hills]</strong></div>
+        <div class="dep-card-project">projeto studio vtx</div>
+        <p class="dep-card-quote">"Espaço para depoimento do cliente sobre a experiência de projetar e construir com o studio VTX."</p>
+      </div>
+      <div class="dep-card">
+        <div class="dep-avatar">
+          <img src="projeto_5_opt.jpg" alt="casa[andrade]" onerror="this.style.opacity='0'">
+        </div>
+        <div class="dep-card-name">casa<strong>[andrade]</strong></div>
+        <div class="dep-card-project">projeto studio vtx</div>
+        <p class="dep-card-quote">"Espaço para depoimento do cliente sobre a experiência de projetar e construir com o studio VTX."</p>
+      </div>
+    </div>
+    <div class="dep-slide">
+      <div class="dep-card">
+        <div class="dep-avatar">
+          <img src="hero_blueprint_opt.jpg" alt="casa[forma design]" onerror="this.style.opacity='0'">
+        </div>
+        <div class="dep-card-name">casa<strong>[forma design]</strong></div>
+        <div class="dep-card-project">projeto studio vtx</div>
+        <p class="dep-card-quote">"Espaço para depoimento do cliente sobre a experiência de projetar e construir com o studio VTX."</p>
+      </div>
+    </div>
+      </div>
+    </div>
+    <button class="dep-arr dep-arr-next" id="dep-next">&#8250;</button>
+  </div>
+  <div class="dep-dots" id="dep-dots"></div>
+</section>
+
+<!-- IMAGE STRIP — 3 imagens lado a lado (obra, detalhe, render) -->
+<div class="image-strip">
+  <div class="image-strip-item">
+    <img src="strip_1of3_opt.jpg" alt="Obra LSF">
+    <div class="image-strip-label">obra · estrutura</div>
+  </div>
+  <div class="image-strip-item">
+    <img src="strip_2of3_opt.jpg" alt="Detalhe construtivo">
+    <div class="image-strip-label">detalhe construtivo</div>
+  </div>
+  <div class="image-strip-item">
+    <img src="strip_3of3_opt.jpg" alt="Renderização">
+    <div class="image-strip-label">renderização</div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="projetos">
+  <div class="portfolio-header">
+    <h2 class="reveal">projetos <span class="light">LSF</span> em destaque</h2>
+  </div>
+  <div class="projects-grid reveal">
+    <div class="project-card project-card-featured" data-project="lsf01">
+      <img src="projeto_2_opt.jpg" alt="Projeto LSF 1" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="project-overlay">
+        <div class="project-status">● em construção</div>
+        <div class="project-name">casa<strong>[das araucárias]</strong></div>
+        <div class="project-info">light steel frame · curitiba, pr · ~293,81m²</div>
+      </div>
+    </div>
+    <div class="project-card" data-project="lsf02">
+      <img src="projeto_ar_opt.jpg" alt="Casa AR" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="project-overlay">
+        <div class="project-status">● em projeto</div>
+        <div class="project-name">casa<strong>[AR]</strong></div>
+        <div class="project-info">lsf · curitiba, pr · ~260,48m²</div>
+      </div>
+    </div>
+    <div class="project-card" data-project="lsf03">
+      <img src="projeto_4_opt.jpg" alt="Projeto LSF 3" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="project-overlay">
+        <div class="project-status">○ em projeto</div>
+        <div class="project-name">casa<strong>[beverly hills]</strong></div>
+        <div class="project-info">lsf · pinhais, pr · ~475,64m²</div>
+      </div>
+    </div>
+    <div class="project-card" data-project="lsf04">
+      <img src="projeto_5_opt.jpg" alt="Projeto LSF 4" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="project-overlay">
+        <div class="project-status">○ em projeto</div>
+        <div class="project-name">casa<strong>[andrade]</strong></div>
+        <div class="project-info">lsf · são josé dos pinhais, pr · ~247,34m²</div>
+      </div>
+    </div>
+    <div class="project-card" data-project="lsf05">
+      <img src="hero_blueprint_opt.jpg" alt="Projeto LSF 5" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="project-overlay">
+        <div class="project-status">● em construção</div>
+        <div class="project-name">casa<strong>[forma design]</strong></div>
+        <div class="project-info">lsf · curitiba, pr · ~220,00m²</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div>
+    <div class="section-label">_posicionamento</div>
+    <blockquote class="manifesto-quote reveal">
+      "A casa de <strong>alto padrão</strong> não é definida pelo material. É definida pela <strong>precisão do projeto</strong> e pela intenção de quem projeta."
+    </blockquote>
+    <div class="manifesto-author reveal reveal-delay-1">Fábio · studio VTX</div>
+  </div>
+  <div class="manifesto-right">
+    <div class="manifesto-block reveal">
+      <h4>_por que LSF no alto padrão?</h4>
+      <p>O preconceito existe. A realidade é outra. Light Steel Frame permite arquitetura mais ousada, prazos mais curtos e controle total de qualidade — exatamente o que um cliente exigente espera.</p>
+    </div>
+    <div class="manifesto-block reveal reveal-delay-1">
+      <h4>_nossa posição</h4>
+      <p>Somos especializados em residências LSF de alto padrão e projetamos para todo o país. Não fazemos tudo — fazemos bem o que escolhemos fazer.</p>
+    </div>
+    <div class="manifesto-block reveal reveal-delay-2">
+      <h4>_projeto + obra</h4>
+      <p>Diferente de escritórios que só projetam, acompanhamos a execução. O projeto não termina no papel — termina na entrega das chaves.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARCEIROS -->
+<section class="parceiros">
+  <div class="portfolio-header">
+    <h2 class="reveal">parceiros e <span class="light">fornecedores</span></h2>
+  </div>
+  <div class="par-grid">
+
+    <div class="par-card">
+      <div class="par-logo">ES</div>
+      <div class="par-name">Espaço SMART</div>
+      <div class="par-role">fornecedor de materiais LSF</div>
+    </div>
+    <div class="par-card">
+      <div class="par-logo">LT</div>
+      <div class="par-name">Leal Tecnologia e Construção</div>
+      <div class="par-role">parceiro de execução LSF</div>
+    </div>
+    <div class="par-card">
+      <div class="par-logo">IE</div>
+      <div class="par-name">Imperatriz Esquadrias</div>
+      <div class="par-role">esquadrias de alto padrão</div>
+    </div>
+    <div class="par-card">
+      <div class="par-logo">FB</div>
+      <div class="par-name">Finabase</div>
+      <div class="par-role">financiamento e viabilidade</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="reveal">prontos para construir<br><span class="light">a casa que você imaginou?</span></h2>
+  <p class="reveal reveal-delay-1">Conte seu projeto. Avaliamos o terreno, o programa e a viabilidade para uma casa LSF de alto padrão.</p>
+  <div class="cta-buttons reveal reveal-delay-2">
+    <a href="https://wa.me/554141415471?text=Ol%C3%A1%2C%20vim%20do%20final%20da%20p%C3%A1gina%20LSF%20do%20studioVTX%20e%20tenho%20interesse%20em%20Projetar%20minha%20casa%21" target="_blank" class="btn-primary">
+      conversar com especialista
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a href="#deixar-contato" class="btn-secondary">
+      deixar meu contato
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FORM INTRO — abre caminho para o formulário do Elementor -->
+<section class="form-intro" id="deixar-contato">
+  <div class="form-or"><span>ou</span></div>
+  <h3 class="reveal">prefere <strong>deixar seu contato</strong>?</h3>
+  <p class="reveal reveal-delay-1">Preencha e a gente retorna. Leva menos de um minuto — e o seu projeto começa por aqui.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     ▼▼▼  FIM DO BLOCO 1  ▼▼▼
+     O widget "Form" do Elementor entra EXATAMENTE NESTE PONTO,
+     entre o Bloco 1 (acima) e o Bloco 2 (abaixo).
+     O CSS que veste o formulário já está neste arquivo.
+     Instruções completas: INSTRUCOES-SANDRO-FORMULARIO.md
+     ▲▲▲  INÍCIO DO BLOCO 2  ▲▲▲
+     ══════════════════════════════════════════════════════════════════ -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <span class="bracket">[ </span>studio<strong>vtx</strong><span class="bracket"> [</span>
+  </div>
+  <nav>
+    <a href="#">instagram</a>
+    <a href="#">projetos</a>
+    <a href="#">contato</a>
+    <a href="#">área do cliente</a>
+  </nav>
+</footer>
+
+
+<!-- LIGHTBOX MODAL -->
+<div class="lb-overlay" id="lb-overlay" role="dialog" aria-modal="true">
+  <div class="lb-header">
+    <div class="lb-project-name" id="lb-name">casa<span>lsf01</span></div>
+    <div class="lb-counter" id="lb-counter">1 / 4</div>
+    <button class="lb-close" id="lb-close" aria-label="Fechar">&#x2715;</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-image-area">
+      <img class="lb-img" id="lb-main-img" src="" alt="" style="display:none;">
+      <div class="lb-placeholder" id="lb-placeholder">
+        <svg viewBox="0 0 24 24" stroke-width="0.75"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>imagens em breve</span>
+      </div>
+      <button class="lb-nav prev" id="lb-prev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="lb-nav next" id="lb-next" aria-label="Próximo">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="lb-info">
+      <div class="lb-info-header">
+        <div class="lb-info-tag" id="lb-tag">light steel frame</div>
+        <div class="lb-info-title" id="lb-title">casa<span>lsf01</span></div>
+      </div>
+      <div class="lb-info-body" id="lb-info-body">
+        <!-- preenchido via JS -->
+      </div>
+      <div class="lb-thumbs" id="lb-thumbs"></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+
+
+  // ── DEPOIMENTOS ──────────────────────────────────────
+  (function(){
+    const track = document.getElementById('dep-track');
+    const dotsEl = document.getElementById('dep-dots');
+    if (!track) return;
+    const slides = track.querySelectorAll('.dep-slide');
+    const n = slides.length;
+    let cur = 0;
+    for (let i = 0; i < n; i++){
+      const d = document.createElement('button');
+      d.className = 'dep-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'slide ' + (i+1));
+      d.onclick = () => go(i);
+      dotsEl.appendChild(d);
+    }
+    function go(idx){
+      cur = (idx + n) % n;
+      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dotsEl.querySelectorAll('.dep-dot').forEach((d,i) => d.classList.toggle('active', i === cur));
+    }
+    document.getElementById('dep-prev').onclick = () => go(cur - 1);
+    document.getElementById('dep-next').onclick = () => go(cur + 1);
+    let sx = 0;
+    track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) go(dx < 0 ? cur+1 : cur-1); }, {passive:true});
+  })();
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+<script>
+// ── PROJECT DATA ─────────────────────────────────────
+const projects = {
+  lsf01: {
+    name: 'das araucárias',
+    title: 'casa<span>[das araucárias]</span>',
+    tag: 'em construção',
+    status: 'em-construcao',
+    statusLabel: 'em construção',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '293,81 m²' },
+      { label: 'localização', value: 'Curitiba, PR' },
+      { label: 'ano', value: '2024' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar de alto padrão projetada e executada com sistema LSF em conjunto com Estrutura de Aço Laminado. Arquitetura contemporânea com ênfase na plasticidade visual, precisão construtiva e personalização completa para a família.' }
+    ],
+    // Adicione os caminhos das imagens aqui quando disponíveis
+    images: [
+      'projetos/lsf01/02_Casa da Mata - Vista frontal central_opt.jpg',
+      'projetos/lsf01/04_Casa da Mata - Vista posterior central_opt.jpg',
+      'projetos/lsf01/05_Casa da Mata - Vista lateral esquerda_opt.jpg',
+      'projetos/lsf01/07_Casa da Mata - Integração interna_opt.jpg',
+      'projetos/lsf01/08_Casa da Mata - Piscina_opt.jpg',
+      'projetos/lsf01/09_Casa da Mata - Detalhe integração_opt.jpg'
+    ]
+  },
+  lsf02: {
+    name: 'AR',
+    title: 'casa<span>[AR]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '260,48 m²' },
+      { label: 'localização', value: 'Curitiba, PR' },
+      { label: 'ano', value: '2025/2026' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar de alto padrão em sistema LSF. Projeto em desenvolvimento pelo studio VTX.' }
+    ],
+    images: [
+      'projetos/lsf02/01_Casa AR - vista frontal 01_opt.jpg',
+      'projetos/lsf02/02_Casa AR - vista frontal 02_opt.jpg',
+      'projetos/lsf02/03_Casa AR - vista frontal interna 01_opt.jpg',
+      'projetos/lsf02/04_Casa AR - vista frontal interna 02_opt.jpg',
+      'projetos/lsf02/07_Casa AR - vista posterior 03_opt.jpg',
+    ]
+  },
+  lsf03: {
+    name: 'beverly hills',
+    title: 'casa<span>[beverly hills]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '475,64 m²' },
+      { label: 'localização', value: 'Pinhais, PR' },
+      { label: 'ano', value: '2025' },
+      { label: 'sobre o projeto', value: 'Residência de alto padrão com programa amplo, integração exterior-interior e uma grande área de lazer como elemento central das atividades da família.' }
+    ],
+    images: [
+      'projetos/lsf03/01_Casa Carvalho - vista frontal esquerda_opt.jpg',
+      'projetos/lsf03/03Casa Carvalho - Hall de acesso_opt.jpg',
+      'projetos/lsf03/04_Casa Carvalho - vista lateral direita_opt.jpg',
+      'projetos/lsf03/05_Casa Carvalho - acesso veículos_opt.jpg',
+      'projetos/lsf03/06_Casa Carvalho - vista lateral direita 2_opt.jpg',
+      'projetos/lsf03/09_Casa Carvalho - detalhe área de lazer_opt.jpg',
+      'projetos/lsf03/10_Casa Carvalho - detalhe piscina_opt.jpg',
+    ]
+  },
+  lsf04: {
+    name: 'andrade',
+    title: 'casa<span>[andrade]</span>',
+    tag: 'em projeto',
+    status: 'em-projeto',
+    statusLabel: 'em projeto',
+    info: [
+      { label: 'sistema construtivo', value: 'Light Steel Frame' },
+      { label: 'área', value: '247,34 m²' },
+      { label: 'localização', value: 'São José dos Pinhais, PR' },
+      { label: 'ano', value: '2025' },
+      { label: 'sobre o projeto', value: 'Residência unifamiliar LSF de alto padrão em desenvolvimento pelo studio VTX.' }
+    ],
+    images: [
+      'projetos/lsf04/01_Casa Robertson - Vista frontal central_opt.jpg',
+      'projetos/lsf04/02_Casa Robertson - Vista frontal esquerda_opt.jpg',
+      'projetos/lsf04/03_Casa Robertson - Vista frontal direita_opt.jpg',
+    ]
+  },
+  lsf05: {
+    name: 'forma design',
+    title: 
