@@ -2189,22 +2189,7 @@ document.querySelectorAll('.project-card[data-project]').forEach(card => {
 </script>
 
 
-<script>
-  function enviarAltura() {
-    const altura = document.documentElement.scrollHeight;
-    window.parent.postMessage({ tipo: 'ajustarAltura', altura: altura }, '*');
-  }
 
-  // Medições únicas e finitas — SEM MutationObserver e SEM listener de resize.
-  // (O MutationObserver foi removido de propósito: o efeito "reveal" ao rolar
-  // muda classes/atributos continuamente, e como o iframe fica sem scroll
-  // próprio, isso realimentava o cálculo de altura em loop.)
-  window.addEventListener('load', enviarAltura);
-  setTimeout(enviarAltura, 500);
-  setTimeout(enviarAltura, 1500);
-  setTimeout(enviarAltura, 3000);
-  setTimeout(enviarAltura, 5000); // margem extra para fontes/imagens lentas
-</script>
     
     
     
