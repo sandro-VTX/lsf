@@ -2084,12 +2084,24 @@ function openLightbox(projectId) {
   document.body.style.overflow = 'hidden';
   renderLightbox();
   ativarPosicaoLightboxNoIframe();
+  avisarParentSobreScroll('travar-scroll');
 }
 
 function closeLightbox() {
   document.getElementById('lb-overlay').classList.remove('active');
   document.body.style.overflow = '';
   desativarPosicaoLightboxNoIframe();
+  avisarParentSobreScroll('destravar-scroll');
+}
+
+// Avisa a página do WordPress (parent) para travar/destravar a rolagem
+// enquanto o lightbox está aberto. Sem isso, quem rola é a página de fora
+// do iframe (o overflow:hidden do body aqui dentro não tem efeito nela),
+// causando o efeito de "tremida" visto ao rolar com o lightbox aberto.
+function avisarParentSobreScroll(acao) {
+  if (window.parentIFrame) {
+    window.parentIFrame.sendMessage({ acao: acao });
+  }
 }
 
 // Corrige o dimensionamento do lightbox quando a página está dentro de um
