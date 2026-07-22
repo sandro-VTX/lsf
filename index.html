@@ -2083,11 +2083,51 @@ function openLightbox(projectId) {
   document.getElementById('lb-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   renderLightbox();
+  ativarPosicaoLightboxNoIframe();
 }
 
 function closeLightbox() {
   document.getElementById('lb-overlay').classList.remove('active');
   document.body.style.overflow = '';
+  desativarPosicaoLightboxNoIframe();
+}
+
+// Corrige o dimensionamento do lightbox quando a página está dentro de um
+// iframe com altura automática (sem scroll próprio). Nesse caso, o
+// "viewport" interno do iframe é a altura total do conteúdo, não a altura
+// real da tela do visitante — então o position:fixed sozinho não funciona.
+// Usa o recurso getPageInfo do iframe-resizer para saber a área visível
+// real e reposicionar o lightbox manualmente. Fora do iframe (teste local),
+// window.parentIFrame não existe e o CSS padrão (position:fixed) continua
+// funcionando normalmente, sem nenhuma mudança de comportamento.
+function ajustarOverlayLightbox(pageInfo) {
+  var overlay = document.getElementById('lb-overlay');
+  if (!overlay || !overlay.classList.contains('active')) return;
+  overlay.style.position = 'absolute';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.top = (pageInfo.scrollTop - pageInfo.offsetTop) + 'px';
+  overlay.style.height = pageInfo.windowHeight + 'px';
+}
+
+function ativarPosicaoLightboxNoIframe() {
+  if (window.parentIFrame) {
+    window.parentIFrame.getPageInfo(ajustarOverlayLightbox);
+  }
+}
+
+function desativarPosicaoLightboxNoIframe() {
+  var overlay = document.getElementById('lb-overlay');
+  if (window.parentIFrame) {
+    window.parentIFrame.getPageInfo(false); // para de escutar
+  }
+  if (overlay) {
+    overlay.style.position = '';
+    overlay.style.left = '';
+    overlay.style.width = '';
+    overlay.style.top = '';
+    overlay.style.height = '';
+  }
 }
 
 // ── RENDER ────────────────────────────────────────────
