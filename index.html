@@ -2096,31 +2096,31 @@ function closeLightbox() {
 // iframe com altura automática (sem scroll próprio). Nesse caso, o
 // "viewport" interno do iframe é a altura total do conteúdo, não a altura
 // real da tela do visitante — então o position:fixed sozinho não funciona.
-// Usa o recurso getPageInfo do iframe-resizer para saber a área visível
-// real e reposicionar o lightbox manualmente. Fora do iframe (teste local),
-// window.parentIFrame não existe e o CSS padrão (position:fixed) continua
-// funcionando normalmente, sem nenhuma mudança de comportamento.
-function ajustarOverlayLightbox(pageInfo) {
+// O Elementor (lado parent) envia a altura/posição reais via mensagem
+// (ver window.iFrameResizer.messageCallback no fim do arquivo); aqui só
+// aplicamos esses valores no overlay. Fora do iframe (teste local), essa
+// mensagem nunca chega e o CSS padrão (position:fixed) continua valendo.
+function ajustarOverlayLightbox(msg) {
   var overlay = document.getElementById('lb-overlay');
   if (!overlay || !overlay.classList.contains('active')) return;
+  if (!msg || typeof msg.windowHeight !== 'number') return;
+
+  var topNoDocumentoFilho = msg.scrollY - msg.iframeTop;
   overlay.style.position = 'absolute';
   overlay.style.left = '0';
   overlay.style.width = '100%';
-  overlay.style.top = (pageInfo.scrollTop - pageInfo.offsetTop) + 'px';
-  overlay.style.height = pageInfo.windowHeight + 'px';
+  overlay.style.top = topNoDocumentoFilho + 'px';
+  overlay.style.height = msg.windowHeight + 'px';
 }
 
 function ativarPosicaoLightboxNoIframe() {
-  if (window.parentIFrame) {
-    window.parentIFrame.getPageInfo(ajustarOverlayLightbox);
+  if (window.__viewportPai) {
+    ajustarOverlayLightbox(window.__viewportPai);
   }
 }
 
 function desativarPosicaoLightboxNoIframe() {
   var overlay = document.getElementById('lb-overlay');
-  if (window.parentIFrame) {
-    window.parentIFrame.getPageInfo(false); // para de escutar
-  }
   if (overlay) {
     overlay.style.position = '';
     overlay.style.left = '';
@@ -2235,6 +2235,20 @@ document.querySelectorAll('.project-card[data-project]').forEach(card => {
      cópia local, confirme que esta linha continua presente antes
      de dar push.
      ═══════════════════════════════════════════════════════════════ -->
+<script>
+  // Recebe a altura/posição REAL da tela do visitante, enviadas pelo
+  // Elementor (lado parent). Usa o mecanismo messageCallback do
+  // iframe-resizer, disponível desde as primeiras versões da biblioteca
+  // (mais estável do que o getPageInfo, que varia entre versões).
+  window.iFrameResizer = {
+    messageCallback: function (msg) {
+      window.__viewportPai = msg;
+      if (typeof ajustarOverlayLightbox === 'function') {
+        ajustarOverlayLightbox(msg);
+      }
+    }
+  };
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.contentWindow.min.js"></script>
 
     
